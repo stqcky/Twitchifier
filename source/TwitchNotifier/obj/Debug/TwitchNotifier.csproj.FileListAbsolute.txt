@@ -53,3 +53,11 @@ C:\Users\STiCK\source\repos\TwitchNotifier\TwitchNotifier\bin\Debug\stanford-cor
 C:\Users\STiCK\source\repos\TwitchNotifier\TwitchNotifier\bin\Debug\xom.dll
 C:\Users\STiCK\source\repos\TwitchNotifier\TwitchNotifier\bin\Debug\Newtonsoft.Json.xml
 C:\Users\STiCK\source\repos\TwitchNotifier\TwitchNotifier\obj\Debug\TwitchNotifier.csproj.CopyComplete
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.csprojAssemblyReference.cache
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.MainWindow.resources
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.Properties.Resources.resources
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.MainWindow.dje-NE.resources
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.MainWindow.dje.resources
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.csproj.GenerateResource.cache
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.exe
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.pdb
