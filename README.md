@@ -2,7 +2,7 @@
 This app notifies you whenever a streamer you've chosen goes live. <br />
 It's pretty lightweight (26.4 MB) <br />
 It consumes 0% CPU and about 10 MB of RAM while being idle <br />
-It refreshes every 5 seconds <br />
+It refreshes every 60 seconds <br />
 Clicking the 'X' button makes it minimize to tray <br />
 Clicking the Notification makes Twitch open in your default browser
 
