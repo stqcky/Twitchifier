@@ -229,7 +229,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="IconTwitch.ico" />
+    <Content Include="TwitchGlitchPurple.ico" />
     <None Include="Resources\IconTwitch.ico" />
+    <Content Include="twitch.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

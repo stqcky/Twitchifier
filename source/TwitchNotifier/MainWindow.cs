@@ -20,6 +20,7 @@ namespace TwitchNotifier
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            // Override 'X' button
             base.OnFormClosing(e);
             if (e.CloseReason != CloseReason.UserClosing) return;
             e.Cancel = true;
@@ -36,7 +37,7 @@ namespace TwitchNotifier
                     hc.DefaultRequestHeaders.Add("Client-ID", "dmv33cb8zz000hq4y2a6coi0wc8zcl");
                     hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "");
                     hc.DefaultRequestHeaders.UserAgent.ParseAdd("Twitch Notifier");
-                    hc.Timeout = TimeSpan.FromSeconds(5);
+                    hc.Timeout = TimeSpan.FromSeconds(10);
 
                     using (var response = await hc.GetAsync($"https://api.twitch.tv/helix/streams?user_login={channel}"))
                     {
@@ -50,7 +51,6 @@ namespace TwitchNotifier
             }
             catch (Exception)
             {
-                MessageBox.Show("Something went wrong");
                 return false;
             }  
         }
@@ -85,7 +85,6 @@ namespace TwitchNotifier
         public MainWindow()
         {
             InitializeComponent();
-            LiveCheck();
 
             try
             {
@@ -111,6 +110,7 @@ namespace TwitchNotifier
 
             notifyIcon1.ContextMenuStrip = new ContextMenuStrip();
             notifyIcon1.ContextMenuStrip.Items.Add("Exit", null, this.MenuExit_Click);
+            LiveCheck();
         }
 
         void MenuExit_Click(object sender, EventArgs e)
@@ -158,7 +158,7 @@ namespace TwitchNotifier
             }
             else
             {
-                MessageBox.Show("Incorrect username");
+                MessageBox.Show("Incorrect username. Try again");
             }
         }
 
@@ -193,11 +193,11 @@ namespace TwitchNotifier
 
         private void chk_startup_CheckedChanged(object sender, EventArgs e)
         {
-            RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
-                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            if (chk_startup.Checked)
+            RegistryKey registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            if (chk_startup.Checked) 
                 registryKey.SetValue("ApplicationName", Application.ExecutablePath);
-            else
+            else 
                 registryKey.DeleteValue("ApplicationName");
         }
     }
