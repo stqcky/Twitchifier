@@ -61,7 +61,7 @@ namespace TwitchNotifier
         {
             while (true)
             {
-                await Task.Delay(5000);
+                await Task.Delay(60000);
                 foreach (ListViewItem item in ListView_usernames.Items)
                 {
                     var curNick = item.Text;

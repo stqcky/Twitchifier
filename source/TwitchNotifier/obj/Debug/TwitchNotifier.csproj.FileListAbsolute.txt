@@ -61,3 +61,13 @@ D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifi
 D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.csproj.GenerateResource.cache
 D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.exe
 D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.pdb
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\bin\Debug\TwitchNotifier.exe.config
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\bin\Debug\TwitchNotifier.exe
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\bin\Debug\TwitchNotifier.pdb
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\bin\Debug\dje-NE\TwitchNotifier.resources.dll
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\bin\Debug\dje\TwitchNotifier.resources.dll
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\bin\Debug\Newtonsoft.Json.xml
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.csproj.Fody.CopyLocal.cache
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\dje-NE\TwitchNotifier.resources.dll
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\dje\TwitchNotifier.resources.dll
+D:\Documents\GitHub\Twitch-Notifier\source\TwitchNotifier\obj\Debug\TwitchNotifier.csproj.CopyComplete
