@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TwitchNotifier.Properties;
+using Twitchfier;
 
-namespace TwitchNotifier
+namespace Twitchifier
 {
     static class Program
     {
@@ -19,10 +14,7 @@ namespace TwitchNotifier
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+            Application.Run(new frmMain());
         }
-
-
-
     }
 }

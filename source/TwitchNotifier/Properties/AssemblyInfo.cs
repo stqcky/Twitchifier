@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TwitchNotifier")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Twitchifier")]
+[assembly: AssemblyDescription("Live Stream Notifier")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TwitchNotifier")]
+[assembly: AssemblyCompany("stqcky")]
+[assembly: AssemblyProduct("Twitchifier")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0da43248-0cc8-4d70-8dc8-15b072aa1d4b")]
+[assembly: Guid("f376bfa4-6788-4195-8621-1cbe2205ae6b")]
 
 // Version information for an assembly consists of the following four values:
 //
