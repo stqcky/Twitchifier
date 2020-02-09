@@ -73,14 +73,29 @@ namespace Twitchfier
 
         static async Task<string> GetGame(string uid)
         {
-            var stream = await api.V5.Streams.GetStreamByUserAsync(uid);
-            return stream.Stream.Game;
+            try
+            {
+                var stream = await api.V5.Streams.GetStreamByUserAsync(uid);
+                return stream.Stream.Game;
+            }
+            catch (Exception)
+            {
+                return "No game";
+            }
         }
 
         static async Task<string> GetUserID(string username)
         {
-            TwitchLib.Api.V5.Models.Users.Users user = await api.V5.Users.GetUserByNameAsync(username);
-            return user.Matches[0].Id;
+            while (true)
+            {
+                try
+                {
+                    TwitchLib.Api.V5.Models.Users.Users user = await api.V5.Users.GetUserByNameAsync(username);
+                    return user.Matches[0].Id;
+                }
+                catch (Exception)
+                {}
+            }
         }
 
         static async Task<List<string>> GetFollowing(string uid)
@@ -96,8 +111,15 @@ namespace Twitchfier
 
         static async Task<bool> IsOnline(string uid)
         {
-            bool isStreaming = await api.V5.Streams.BroadcasterOnlineAsync(uid);
-            return isStreaming;
+            try
+            {
+                bool isStreaming = await api.V5.Streams.BroadcasterOnlineAsync(uid);
+                return isStreaming;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         async void LiveCheck()
