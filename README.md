@@ -1,16 +1,30 @@
-# Twitch-Notifier
-This app notifies you whenever a streamer you've chosen goes live. <br />
-![image](https://i.imgur.com/4NtFJth.png)<br />
+# Twitchifier
+This app notifies you whenever a Twitch.tv streamer you've chosen goes live. <br />
 
-It consumes 0% CPU and about 20 MB of RAM while being idle <br />
-![image](https://i.imgur.com/9UsNjKj.png) <br />
+## Dark Theme <br />
+![image](https://i.imgur.com/N6u4FFX.png)<br />
 
-This is the settings menu <br />
-![image](https://i.imgur.com/80gTm5G.png) <br />
+## Light Theme <br />
+![image](https://i.imgur.com/3g37Qln.png)<br />
 
-This is what the notification looks like <br />
-![image](https://i.imgur.com/2XL7ksX.png) <br />
+## Notification <br />
+![image](https://i.imgur.com/SlggBBZ.png) <br />
 
-Twitch API limits requests to 30 per minute, so make sure you don't exceed it
+## Streamer List Tab: <br />
+ * Profile picture <br />
+ * Username <br />
+ * Is live <br />
+ * Category <br />
+
+## Add Streamers Tab: <br />
+ * Add by username (Add a streamer by their username, not case-sensitive) <br />
+ * Import from following (Adds users from username's following list, not case-sensitive) <br />
+
+## Settings Tab: <br />
+ * Dark Theme <br />
+ * Start with Windows <br />
+ * Start Minimized (Automatically hides the application when it starts) <br />
+ * Set delay (Check for streams every X seconds) <br />
+ * Login to Twitch (Expends your requests/minute to 800 instead of 30) <br />
 
 
