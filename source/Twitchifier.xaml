@@ -1,0 +1,351 @@
+﻿<Window x:Name="Twitchifier" x:Class="Twitchifier.MainWindow"
+       
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Twitchifier"
+        mc:Ignorable="d"
+        Title="Twitchifier" Height="470" Width="759.5" WindowStyle="None"
+        MinHeight="460" MinWidth="759.5">
+
+    <Window.Resources>
+        <ContextMenu x:Key="Menu">
+            <MenuItem Header="Show" Click="MenuShow"/>
+            <MenuItem Header="Exit" Click="MenuExit"/>
+            <MenuItem Header="Close this menu" />
+        </ContextMenu>
+    </Window.Resources>
+
+    <Grid Margin="0,0,0,-8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <!--<ColumnDefinition Width="40*"/>-->
+            <ColumnDefinition Width="265*"/>
+            <ColumnDefinition Width="138*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Top bar-->
+        <Grid x:Name="TopBar" Grid.ColumnSpan="2" Background="#FF6441A4" MouseDown="TopBar_MouseDown">
+
+            <TextBlock HorizontalAlignment="Center" Foreground="White" Margin="0,3,0,2">
+                    Twitchifier
+            </TextBlock>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                <Button x:Name="Minimize" Click="Minimize_Click" 
+                  Height="auto" Width="auto" Margin="1"
+                  Style="{StaticResource MaterialDesignToolButton}"
+                  Foreground="White">
+                    <materialDesign:PackIcon
+                        Kind="WindowMinimize"
+                        Height="auto"
+                        Width="auto" />
+                </Button>
+
+                <Button x:Name="Maximize" Click="Maximize_Click"
+                  Height="auto" Width="auto" Margin="1"
+                  Style="{StaticResource MaterialDesignToolButton}"
+                  Foreground="White">
+                    <materialDesign:PackIcon
+                        Kind="WindowMaximize"
+                        Height="auto"
+                        Width="auto" />
+                </Button>
+
+                <Button x:Name="Exit" Click="Exit_Click"
+                  Height="auto" Width="auto" Margin="1" 
+                  Style="{StaticResource MaterialDesignToolButton}"
+                  Foreground="White">
+                    <materialDesign:PackIcon
+                        Kind="WindowClose"
+                        Height="auto"
+                        Width="auto" />
+                </Button>
+
+            </StackPanel>
+        </Grid>
+
+
+        <GroupBox 
+            Grid.Row="1"
+            Header="Streamer List"
+            Style="{DynamicResource MaterialDesignCardGroupBox}"
+            Margin="16" Grid.RowSpan="2">
+
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                             Kind="FormatListBulleted"
+                             Height="32"
+                             Width="32"
+                             VerticalAlignment="Center" />
+                        <TextBlock
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                            Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+
+            <DataGrid x:Name="StreamerTable"
+                      Margin="0 8 0 0"
+                      RowHeight="70"
+                      CanUserAddRows="false"
+                      CanUserSortColumns="True"
+                      AutoGenerateColumns="False"
+                      SelectionMode="Single" 
+                      SelectionUnit="FullRow"
+                      materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                      materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                      VirtualizingPanel.ScrollUnit="Pixel"
+                      MouseDown="StreamerTable_MouseDown">
+
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="Visit_Click" Header="Open in Browser" />
+                        <MenuItem Click="Remove_Click" Header="Remove" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Image" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Image}" Stretch="Uniform"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Binding="{Binding Username}" Header="Username" IsReadOnly="True">
+
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Binding="{Binding IsLive}" Header="Live" IsReadOnly="True">
+
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Binding="{Binding Category}" Header="Category" IsReadOnly="True">
+
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+
+            </DataGrid>
+
+        </GroupBox>
+
+        <!--Add streamers-->
+        <GroupBox Grid.Row="1" Grid.Column="1"
+                      Header="Add streamers"
+                      Style="{DynamicResource MaterialDesignCardGroupBox}"
+                      Margin="16">
+
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Kind="UserMultipleAddOutline"
+                            Height="32"
+                            Width="32"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                            Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+
+            <materialDesign:Transitioner x:Name="AddPages" SelectedIndex="0">
+                <!--Main-->
+                <StackPanel>
+                    <Button x:Name="AddByUsername" Click="AddStreamersPage"
+                        VerticalAlignment="Top" Height="auto">
+
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="UserSearchOutline" 
+                                                     Width="auto" Height="auto"
+                                                     Margin="0,0,5,0"/>
+                            <TextBlock VerticalAlignment="Center" Margin="0,5,5,5" 
+                                       Text="Add by username" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="ImportFromFollowing" Click="AddStreamersPage"
+                        VerticalAlignment="Bottom" Margin="0,7" Height="auto">
+                        <StackPanel Orientation="Horizontal" >
+                            <materialDesign:PackIcon Kind="Import" 
+                                                     Width="auto" Height="auto"
+                                                     Margin="0,0,2,0"/>
+                            <TextBlock VerticalAlignment="Center" Margin="0" 
+                                       Text="Import from following" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!--Add by username-->
+                <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect SlideInFromBottom}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBox  Margin="0,0,0,5" x:Name="AddUsername"
+                              materialDesign:HintAssist.Hint="Username"
+                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Margin="0,0,5,0" Content="Add" Click="AddStreamerClick" />
+                            <Button Margin="0,0,5,0" Content="Cancel" Grid.Column="1"
+                                Click="AddStreamersPage"/>
+                        </Grid>
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
+
+                <!--Import from following-->
+                <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect SlideInFromBottom}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBox  Margin="0,0,0,5" x:Name="ImportUsername"
+                              materialDesign:HintAssist.Hint="Username"
+                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Margin="0,0,5,0" Content="Import" Click="ImportClick" />
+                            <Button Margin="0,0,5,0" Content="Cancel" Grid.Column="1"
+                                Click="AddStreamersPage"/>
+                        </Grid>
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
+            </materialDesign:Transitioner>
+
+        </GroupBox>
+        <!--End add streamers-->
+
+        <!--Settings-->
+        <GroupBox Grid.Row="2" Grid.Column="1"                        
+                  Header="Settings"
+                  Style="{DynamicResource MaterialDesignCardGroupBox}"
+                  Margin="16,16,16,0"
+                  VerticalAlignment="Top" Height="234">
+            <GroupBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem>
+                        <StackPanel>
+
+                        </StackPanel>
+                    </MenuItem>
+                </ContextMenu>
+            </GroupBox.ContextMenu>
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                             Kind="Settings"
+                             Height="32"
+                             Width="32"
+                             VerticalAlignment="Center" />
+                        <TextBlock
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                            Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+
+            <materialDesign:Transitioner x:Name="SettingsPages" SelectedIndex="0">
+
+                <!--Main-->
+                <StackPanel>
+                    <DockPanel Margin="0,5">
+                        <TextBlock>Dark Theme</TextBlock>
+                        <ToggleButton Margin="10,0" HorizontalAlignment="Right"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                      Checked="SwitchTheme" Unchecked="SwitchTheme"
+                                      x:Name="DarkTheme" />
+                    </DockPanel>
+
+                    <DockPanel Margin="0,0,0,0">
+                        <TextBlock>Start with Windows</TextBlock>
+                        <ToggleButton Margin="10,0" HorizontalAlignment="Right"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                      x:Name="StartWithWindows" Checked="StartWithWindows_Click" 
+                                      Unchecked="StartWithWindows_Click"/>
+                    </DockPanel>
+
+                    <DockPanel Margin="0,5">
+                        <TextBlock>Start Minimized</TextBlock>
+                        <ToggleButton Margin="10,0" HorizontalAlignment="Right"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                      x:Name="chkStartMinimized"
+                                      Checked="StartMinimized_Click" Unchecked="StartMinimized_Click"/>
+                    </DockPanel>
+
+                    <Button VerticalAlignment="Top" Margin="0,5" Height="auto"
+                            x:Name="SetDelay" Click="SettingsPage">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ProgressClock" Width="auto" Height="auto"
+                                                 Margin="0,0,5,0"/>
+                            <TextBlock VerticalAlignment="Center" Margin="0,5,5,5" 
+                                       Text="Set delay"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button VerticalAlignment="Top" Margin="0,5" Height="auto"
+                            x:Name="LoginToTwitch" Click="TwitchLogin">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Twitch" Width="auto" Height="auto"
+                                                 Margin="0,0,5,0"/>
+                            <TextBlock VerticalAlignment="Center" Margin="0,5,5,5"
+                                       Text="Login to Twitch" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!--Set delay-->
+                <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect SlideInFromBottom}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBox  Margin="0,0,0,5" x:Name="Delay"
+                              materialDesign:HintAssist.Hint="Delay"
+                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Margin="0,0,5,0" Content="Apply" Click="SetDelayClick" />
+                            <Button Margin="0,0,5,0" Content="Cancel" Grid.Column="1"
+                                Click="SettingsPage"/>
+                        </Grid>
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
+            </materialDesign:Transitioner>
+        </GroupBox >
+        <!--End settings-->
+        <materialDesign:Snackbar x:Name="snackbar"
+                                 Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+                                 Message="" IsActive="False" />
+    </Grid>
+</Window>
+
