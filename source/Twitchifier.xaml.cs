@@ -356,8 +356,8 @@ namespace Twitchifier
         private void StartWithWindows_Click(object sender, RoutedEventArgs e)
         {
             RegistryKey registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            if (StartWithWindows.IsChecked ?? false) registryKey.SetValue("Twitchifier V3", Assembly.GetExecutingAssembly().Location);
-            else registryKey.DeleteValue("Twitchifier V3");
+            if (StartWithWindows.IsChecked ?? false) registryKey.SetValue("Twitchifier 3", Assembly.GetExecutingAssembly().Location);
+            else registryKey.DeleteValue("Twitchifier 3");
 
             Properties.Settings.Default.StartWithWindows = StartWithWindows.IsChecked ?? false;
             Properties.Settings.Default.Save();
