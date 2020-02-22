@@ -138,6 +138,7 @@ namespace Twitchifier
                         notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
                         notifyIcon.ShowBalloonTip(0, $"{streamer.Username} is live!", game, ToolTipIcon.None);
                         await Task.Delay(10000);
+                        notifyIcon.BalloonTipClicked -= NotifyIcon_BalloonTipClicked;
                     }
                     if (!isLive && streamer.IsLive == "Yes")
                     {
