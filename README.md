@@ -18,13 +18,13 @@ This app notifies you whenever a Twitch.tv streamer you've chosen goes live. <br
 
 ## Add Streamers Tab: <br />
  * Add by username (Add a streamer by their username, not case-sensitive) <br />
- * Import from following (Adds users from username's following list, not case-sensitive) <br />
+ * Import from following (Adds users from someone's following list, not case-sensitive) <br />
 
 ## Settings Tab: <br />
  * Dark Theme <br />
  * Start with Windows <br />
  * Start Minimized (Automatically hides the application when it starts) <br />
- * Set delay (Check for streams every X seconds) <br />
+ * Set delay (Checks whether anyone is live every X seconds) <br />
  * Login to Twitch (Expends your requests/minute to 800 instead of 30) <br />
 
 
