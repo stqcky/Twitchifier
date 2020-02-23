@@ -125,7 +125,7 @@ namespace Twitchifier
                     }
 
                     var isLive = await TwitchAPI.V5.Streams.BroadcasterOnlineAsync(userID);
-                    if (isLive && streamer.IsLive != "Yes")
+                    if (isLive && streamer.IsLive == "No")
                     {
                         streamer.IsLive = "Yes";
                         var stream = await TwitchAPI.V5.Streams.GetStreamByUserAsync(userID);
@@ -140,7 +140,14 @@ namespace Twitchifier
                         await Task.Delay(10000);
                         notifyIcon.BalloonTipClicked -= NotifyIcon_BalloonTipClicked;
                     }
-                    if (!isLive && streamer.IsLive == "Yes")
+                    else if (isLive && streamer.IsLive == "Yes")
+                    {
+                        var stream = await TwitchAPI.V5.Streams.GetStreamByUserAsync(userID);
+                        var game = stream.Stream.Game;
+                        streamer.Category = game;
+                        StreamerTable.Items.Refresh();
+                    }
+                    else if (!isLive && streamer.IsLive == "Yes")
                     {
                         streamer.IsLive = "No";
                         streamer.Category = "";
