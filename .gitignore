@@ -360,3 +360,20 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+source/obj/Debug/Twitchifier_MarkupCompile.lref
+source/obj/Debug/Twitchifier_MarkupCompile.cache
+source/obj/Debug/Twitchifier.pdb
+source/obj/Debug/Twitchifier.g.resources
+source/obj/Debug/Twitchifier.g.i.cs
+source/obj/Debug/Twitchifier.g.cs
+source/obj/Debug/Twitchifier.exe
+source/obj/Debug/Twitchifier.csprojAssemblyReference.cache
+source/obj/Debug/Twitchifier.csproj.FileListAbsolute.txt
+source/obj/Debug/Twitchifier.baml
+source/obj/Debug/TempPE/Properties.Resources.Designer.cs.dll
+source/obj/Debug/App.baml
+source/bin/Debug/Twitchifier.pdb
+source/bin/Debug/Twitchifier.exe.config
+source/bin/Debug/Twitchifier.exe
+source/.vs/Twitchifier/v16/Server/sqlite3/storage.ide
+source/.vs/Twitchifier/v16/.suo
