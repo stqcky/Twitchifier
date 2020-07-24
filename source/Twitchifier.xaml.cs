@@ -1,29 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Forms;
-using System.Drawing;
 using TwitchLib.Api;
 using TwitchLib.Api.Events;
 using System.Reflection;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Interop;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 
 namespace Twitchifier
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    /// 
     public partial class MainWindow : Window
     {
         public List<Streamer> StreamerList = new List<Streamer>();
@@ -90,13 +78,25 @@ namespace Twitchifier
                 var usernames = Properties.Settings.Default.StreamerList;
                 foreach (var username in usernames)
                 {
-                    AddStreamer(username, true);
+                    var result = await AddStreamer(username, true);
+                    if (result == 1)
+                    {
+                        try
+                        {
+                            usernames.RemoveAt(usernames.IndexOf(username));
+
+                            Properties.Settings.Default.StreamerList = usernames;
+                            Properties.Settings.Default.Save();
+                        }
+                        catch (Exception) { }
+                    }
                     await Task.Delay(100);
                 }
             }
             catch (Exception) { }
 
-            if (Properties.Settings.Default.StreamerList == null) Properties.Settings.Default.StreamerList = new List<string>();
+            if (Properties.Settings.Default.StreamerList == null)
+                Properties.Settings.Default.StreamerList = new List<string>();
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
             GC.Collect();
@@ -106,57 +106,66 @@ namespace Twitchifier
         {
             while (true)
             {
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
-                GC.Collect();
-
-                var StreamerListCopy = new List<Streamer>();
-                foreach (var item in StreamerList)
+                try
                 {
-                    StreamerListCopy.Add(item);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                    GC.Collect();
+
+                    var StreamerListCopy = new List<Streamer>();
+                    foreach (var item in StreamerList)
+                    {
+                        StreamerListCopy.Add(item);
+                    }
+                    foreach (var streamer in StreamerListCopy)
+                    {
+                        var userID = "";
+                        if (StreamerDict.TryGetValue(streamer.Username, out userID)) { }
+                        else
+                        {
+                            var user = await TwitchAPI.V5.Users.GetUserByNameAsync(streamer.Username);
+                            userID = user.Matches[0].Id;
+                        }
+
+                        var isLive = await TwitchAPI.V5.Streams.BroadcasterOnlineAsync(userID);
+                        if (isLive && streamer.IsLive == "No")
+                        {
+                            streamer.IsLive = "Yes";
+
+                            var stream = await TwitchAPI.V5.Streams.GetStreamByUserAsync(userID);
+                            var game = stream.Stream.Game;
+                            if (game == "") game = "No category";
+                            streamer.Category = game;
+                            StreamerTable.Items.Refresh();
+
+                            clickLink = "https://twitch.tv/" + streamer.Username;
+                            notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
+                            notifyIcon.ShowBalloonTip(0, $"{streamer.Username} is live!", game, ToolTipIcon.None);
+                            await Task.Delay(10000);
+                            notifyIcon.BalloonTipClicked -= NotifyIcon_BalloonTipClicked;
+                        }
+                        else if (isLive && streamer.IsLive == "Yes")
+                        {
+                            var stream = await TwitchAPI.V5.Streams.GetStreamByUserAsync(userID);
+                            var game = stream.Stream.Game;
+                            streamer.Category = game;
+                            StreamerTable.Items.Refresh();
+                        }
+                        else if (!isLive && streamer.IsLive == "Yes")
+                        {
+                            streamer.IsLive = "No";
+                            streamer.Category = "";
+                        }
+                    }
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                    GC.Collect();
+
+                    await Task.Delay(CheckDelay * 1000);
                 }
-                foreach (var streamer in StreamerListCopy)
+                catch (Exception)
                 {
-                    var userID = "";
-                    if (StreamerDict.TryGetValue(streamer.Username, out userID)) {}
-                    else
-                    {
-                        var user = await TwitchAPI.V5.Users.GetUserByNameAsync(streamer.Username);
-                        userID = user.Matches[0].Id;
-                    }
-
-                    var isLive = await TwitchAPI.V5.Streams.BroadcasterOnlineAsync(userID);
-                    if (isLive && streamer.IsLive == "No")
-                    {
-                        streamer.IsLive = "Yes";
-                        var stream = await TwitchAPI.V5.Streams.GetStreamByUserAsync(userID);
-                        var game = stream.Stream.Game;
-                        if (game == "") game = "No category";
-                        streamer.Category = game;
-                        StreamerTable.Items.Refresh();
-
-                        clickLink = "https://twitch.tv/" + streamer.Username;
-                        notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
-                        notifyIcon.ShowBalloonTip(0, $"{streamer.Username} is live!", game, ToolTipIcon.None);
-                        await Task.Delay(10000);
-                        notifyIcon.BalloonTipClicked -= NotifyIcon_BalloonTipClicked;
-                    }
-                    else if (isLive && streamer.IsLive == "Yes")
-                    {
-                        var stream = await TwitchAPI.V5.Streams.GetStreamByUserAsync(userID);
-                        var game = stream.Stream.Game;
-                        streamer.Category = game;
-                        StreamerTable.Items.Refresh();
-                    }
-                    else if (!isLive && streamer.IsLive == "Yes")
-                    {
-                        streamer.IsLive = "No";
-                        streamer.Category = "";
-                    }
+                    await Task.Delay(10000);
+                    LiveCheck();
                 }
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
-                GC.Collect();
-
-                await Task.Delay(CheckDelay * 1000);
             }
         }
 
@@ -165,7 +174,7 @@ namespace Twitchifier
             Process.Start(clickLink);
         }
 
-        public async void AddStreamer(string username, bool fromSettings)
+        public async Task<int> AddStreamer(string username, bool fromSettings)
         {
             TwitchLib.Api.V5.Models.Users.Users user;
             try
@@ -175,7 +184,7 @@ namespace Twitchifier
             catch (Exception)
             {
                 SnackBar("Invalid username");
-                return;
+                return 1;
             }
             
             if (user.Matches.Length == 1)
@@ -198,7 +207,7 @@ namespace Twitchifier
             else
             {
                 SnackBar("Invalid username");
-                return;
+                return 1;
             }
 
             if (!fromSettings)
@@ -211,6 +220,8 @@ namespace Twitchifier
                 catch (Exception) {}
 
             }
+
+            return 0;
         }
 
         public async void Import(string username)
@@ -225,7 +236,7 @@ namespace Twitchifier
                 {
                     try
                     {
-                        AddStreamer(userFollowed.Channel.Name, false);
+                        await AddStreamer(userFollowed.Channel.Name, false);
                         StreamerTable.Items.Refresh();
                         await Task.Delay(50);
                     }
@@ -239,7 +250,7 @@ namespace Twitchifier
             
             AddPages.SelectedIndex = 0;
             await Task.Delay(400);
-            AddStreamer(AddUsername.Text, false);
+            await AddStreamer(AddUsername.Text, false);
         }
 
         private async void ImportClick(object sender, RoutedEventArgs e)
@@ -270,18 +281,22 @@ namespace Twitchifier
             Properties.Settings.Default.Save();
             if (DarkTheme.IsChecked ?? false)
             {
-                var dark = new MaterialDesignThemes.Wpf.BundledTheme();
-                dark.BaseTheme = MaterialDesignThemes.Wpf.BaseTheme.Dark;
-                dark.PrimaryColor = MaterialDesignColors.PrimaryColor.DeepPurple;
-                dark.SecondaryColor = MaterialDesignColors.SecondaryColor.Lime;
+                var dark = new MaterialDesignThemes.Wpf.BundledTheme
+                {
+                    BaseTheme = MaterialDesignThemes.Wpf.BaseTheme.Dark,
+                    PrimaryColor = MaterialDesignColors.PrimaryColor.DeepPurple,
+                    SecondaryColor = MaterialDesignColors.SecondaryColor.Lime
+                };
                 System.Windows.Application.Current.Resources.MergedDictionaries.Add(dark);
             }
             else
             {
-                var light = new MaterialDesignThemes.Wpf.BundledTheme();
-                light.BaseTheme = MaterialDesignThemes.Wpf.BaseTheme.Light;
-                light.PrimaryColor = MaterialDesignColors.PrimaryColor.DeepPurple;
-                light.SecondaryColor = MaterialDesignColors.SecondaryColor.Lime;
+                var light = new MaterialDesignThemes.Wpf.BundledTheme
+                {
+                    BaseTheme = MaterialDesignThemes.Wpf.BaseTheme.Light,
+                    PrimaryColor = MaterialDesignColors.PrimaryColor.DeepPurple,
+                    SecondaryColor = MaterialDesignColors.SecondaryColor.Lime
+                };
                 System.Windows.Application.Current.Resources.MergedDictionaries.Add(light);
             }
         }
@@ -312,14 +327,13 @@ namespace Twitchifier
                 Properties.Settings.Default.Save();
             }
             catch (Exception) {}
-
         }
 
         private void Visit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                System.Diagnostics.Process.Start("http://twitch.tv/" + StreamerList[StreamerTable.SelectedIndex].Username);
+                Process.Start("http://twitch.tv/" + StreamerList[StreamerTable.SelectedIndex].Username);
             }
             catch (Exception) {}
         }
