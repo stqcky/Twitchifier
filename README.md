@@ -1,5 +1,5 @@
 # Twitchifier
-This app notifies you whenever a Twitch.tv streamer you've chosen goes live. <br />
+This app notifies you whenever a Twitch.tv streamer goes live. <br />
 
 ## Dark Theme <br />
 ![image](https://i.imgur.com/N6u4FFX.png)<br />
