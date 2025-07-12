@@ -1,3 +1,6 @@
+# This is 5 years old at this point.
+Made for myself because I didn't like any existing stream notifiers.
+
 # Twitchifier
 This app notifies you whenever a Twitch.tv streamer goes live. <br />
 
